@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PromptTemplates">
+    <option name="builtInPromptOverrides">
+      <list>
+        <BuiltInPromptOverride>
+          <option name="groupId" value="rules" />
+          <option name="promptId" value="project" />
+          <option name="text" value="This is an educational Android project called Howest Desserts.&#10;Package: be.howest.henrique.howestdesserts.&#10;Use Kotlin.&#10;Use Jetpack Compose. Do not create XML layouts.&#10;Prefer simple, readable code for students new to Android.&#10;Do not add a library without first explaining why it is required.&#10;Use the existing Gradle version catalog.&#10;Use a ViewModel as the screen-level state holder.&#10;Expose screen state with StateFlow.&#10;Prefer state down and events up.&#10;Do not add Retrofit, Room or Navigation.&#10;Do not introduce repositories, dependency injection or a domain layer.&#10;Explain significant generated code.&#10;Do not modify unrelated files." />
+        </BuiltInPromptOverride>
+      </list>
+    </option>
+    <option name="prompts">
+      <list>
+        <PromptTemplate>
+          <option name="enabled" value="true" />
+          <option name="name" value="prompts lab" />
+          <option name="text" value="Create a Kotlin data class Dessert that matches this JSON object: {&quot;id&quot;: 0, &quot;productName&quot;: &quot;Cupcake&quot;, &quot;imageFile&quot;: &quot;https://...&quot;, &quot;description&quot;: &quot;...&quot;, &quot;size&quot;: 500, &quot;price&quot;: 5.0}. Explain each field and why a data class is used.&#10;&#10;Which dependencies do I need for Coil AsyncImage with remote image URLs, viewModel() in Compose and collectAsStateWithLifecycle()? Explain why each one is required and how to add them to the version catalog.&#10;&#10;Create a DessertViewModel and a DessertUiState that expose a hardcoded List&lt;Dessert&gt; using StateFlow. Explain the difference between MutableStateFlow and StateFlow.&#10;&#10;Create a DessertRoute composable that collects the ui state with collectAsStateWithLifecycle() and passes the desserts to a stateless DessertListScreen. Explain what “state down, events up” means here.&#10;&#10;Create a reusable Material 3 DessertCard with Coil AsyncImage that shows the image, product name, stock and price, and a DessertListScreen with a two-column LazyVerticalGrid.&#10;&#10;Create a reusable, stateless DessertDetailScreen that shows one Dessert: image, product name, description, size and price. Add a @Preview. Do not use Navigation Compose.&#10;&#10;Explain this Kotlin error: “Argument type mismatch: actual type is ‘String’, but ‘Int’ was expected” when creating a data class instance." />
+        </PromptTemplate>
+      </list>
+    </option>
+  </component>
+</project>
