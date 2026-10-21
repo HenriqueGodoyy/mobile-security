@@ -1,5 +1,7 @@
 package be.howest.henrique.howestdesserts.ui.cart
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -28,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,18 +41,20 @@ import be.howest.henrique.howestdesserts.data.CartItem
 import be.howest.henrique.howestdesserts.ui.theme.HowestDessertsTheme
 import coil3.compose.AsyncImage
 
-/** Stateful: gets the ViewModel and collects its StateFlow. */
+
 @Composable
 fun CartRoute(
     modifier: Modifier = Modifier,
     viewModel: CartViewModel = viewModel(factory = CartViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     CartScreen(
         uiState = uiState,
         onRemoveItem = viewModel::removeItem,
         onClearCart = viewModel::clearCart,
+        onShareCart = { shareCart(context, uiState) },
         modifier = modifier
     )
 }
@@ -59,6 +65,7 @@ fun CartScreen(
     uiState: CartUiState,
     onRemoveItem: (CartItem) -> Unit,
     onClearCart: () -> Unit,
+    onShareCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -66,12 +73,23 @@ fun CartScreen(
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-        Text(
-            text = "Your Cart",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        // Title + Share action
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Your Cart",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            IconButton(onClick = onShareCart, enabled = uiState.items.isNotEmpty()) {
+                Icon(Icons.Filled.Share, contentDescription = "Share cart")
+            }
+        }
 
         if (uiState.items.isEmpty()) {
             Box(
@@ -172,6 +190,24 @@ fun CartItemCard(
 
 private fun formatPrice(price: Double): String = "€%.2f".format(price)
 
+/** Plain-text summary of the cart. A pure function: easy to read and test. */
+fun buildCartSummary(uiState: CartUiState): String = buildString {
+    appendLine("My Howest Desserts cart:")
+    uiState.items.forEach { item ->
+        appendLine("- ${item.productName} x ${item.quantity}: ${formatPrice(item.price * item.quantity)}")
+    }
+    append("Subtotal: ${formatPrice(uiState.subtotal)}")
+}
+
+private fun shareCart(context: Context, uiState: CartUiState) {
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_SUBJECT, "My Howest Desserts cart")
+        putExtra(Intent.EXTRA_TEXT, buildCartSummary(uiState))
+    }
+    context.startActivity(Intent.createChooser(sendIntent, "Share cart"))
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CartScreenPreview() {
@@ -185,7 +221,8 @@ private fun CartScreenPreview() {
                 subtotal = 10.0
             ),
             onRemoveItem = {},
-            onClearCart = {}
+            onClearCart = {},
+            onShareCart = {}
         )
     }
 }
