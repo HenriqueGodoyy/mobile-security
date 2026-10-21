@@ -11,6 +11,7 @@ import be.howest.henrique.howestdesserts.ui.components.LoadingScreen
 
 @Composable
 fun DessertRoute(
+    onDessertClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DessertViewModel = viewModel(factory = DessertViewModel.Factory)
 ) {
@@ -21,6 +22,7 @@ fun DessertRoute(
         DessertUiState.Loading -> LoadingScreen(modifier)
         is DessertUiState.Success -> DessertListScreen(
             desserts = state.desserts,
+            onDessertClick = onDessertClick,
             modifier = modifier
         )
 

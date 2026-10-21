@@ -16,6 +16,7 @@ import be.howest.henrique.howestdesserts.ui.theme.HowestDessertsTheme
 @Composable
 fun DessertListScreen(
     desserts: List<Dessert>,
+    onDessertClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -27,7 +28,10 @@ fun DessertListScreen(
     ) {
 
         items(desserts, key = { it.id }) { dessert ->
-            DessertCard(dessert = dessert)
+            DessertCard(
+                dessert = dessert,
+                onClick = { onDessertClick(dessert.id) }
+            )
         }
     }
 }
@@ -36,6 +40,18 @@ fun DessertListScreen(
 @Composable
 private fun DessertListScreenPreview() {
     HowestDessertsTheme {
-        DessertListScreen(desserts = DessertData.desserts)
+        DessertListScreen(
+            desserts = listOf(
+                Dessert(
+                    id = 1,
+                    productName = "Cupcake",
+                    imageFile = "https://devicedev.vesper-design.be/assets/cupcake.png",
+                    description = "A delicious cupcake",
+                    size = 500,
+                    price = 3.5
+                )
+            ),
+            onDessertClick = {}
+        )
     }
 }

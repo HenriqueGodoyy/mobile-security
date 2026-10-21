@@ -1,4 +1,4 @@
-package be.howest.henrique.howestdesserts.ui.card
+package be.howest.henrique.howestdesserts.ui.cart
 
 import be.howest.henrique.howestdesserts.data.CartItem
 

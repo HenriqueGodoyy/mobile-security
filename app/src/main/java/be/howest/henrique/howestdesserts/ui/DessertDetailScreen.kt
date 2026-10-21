@@ -9,8 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +29,11 @@ import be.howest.henrique.howestdesserts.data.Dessert
 import be.howest.henrique.howestdesserts.ui.theme.HowestDessertsTheme
 import coil3.compose.AsyncImage
 
+/** Stateless and reusable: it only needs a Dessert and an add-to-cart event. */
 @Composable
 fun DessertDetailScreen(
     dessert: Dessert,
+    onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,9 +76,20 @@ fun DessertDetailScreen(
             DessertInfoItem(label = "Size", value = "${dessert.size} g")
             DessertInfoItem(label = "Price", value = "€ %.2f".format(dessert.price))
         }
+
+        Spacer(Modifier.height(24.dp))
+
+        // Event up: the screen only reports the click, the ViewModel adds to the cart.
+        Button(
+            onClick = onAddToCart,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Filled.ShoppingCart, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text("Add to cart")
+        }
     }
 }
-
 
 @Composable
 private fun DessertInfoItem(
@@ -99,6 +117,16 @@ private fun DessertInfoItem(
 @Composable
 private fun DessertDetailScreenPreview() {
     HowestDessertsTheme {
-        DessertDetailScreen(dessert = DessertData.desserts.first())
+        DessertDetailScreen(
+            dessert = Dessert(
+                id = 1,
+                productName = "Cupcake",
+                imageFile = "https://devicedev.vesper-design.be/assets/cupcake.png",
+                description = "A delicious cupcake",
+                size = 500,
+                price = 3.5
+            ),
+            onAddToCart = {}
+        )
     }
 }

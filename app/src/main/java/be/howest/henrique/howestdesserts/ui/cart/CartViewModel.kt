@@ -1,4 +1,4 @@
-package be.howest.henrique.howestdesserts.ui.card
+package be.howest.henrique.howestdesserts.ui.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
