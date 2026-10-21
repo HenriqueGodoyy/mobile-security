@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import be.howest.henrique.howestdesserts.data.Dessert
-import be.howest.henrique.howestdesserts.data.DessertData
 import be.howest.henrique.howestdesserts.ui.theme.HowestDessertsTheme
 import coil3.compose.AsyncImage
 
